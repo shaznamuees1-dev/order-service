@@ -2,6 +2,8 @@ package com.order.orderservice.controller;
 
 import com.order.orderservice.domain.Order;
 import com.order.orderservice.service.OrderService;
+
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,13 +18,13 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    //Create Order
+    // Create Order
     @PostMapping
-    public Order createOrder(@RequestBody Order order) {
+    public Order createOrder(@Valid @RequestBody Order order) {
         return orderService.createOrder(order);
     }
 
-    //Get All Orders
+    // Get All Orders
     @GetMapping
     public List<Order> getAllOrders() {
         return orderService.getAllOrders();

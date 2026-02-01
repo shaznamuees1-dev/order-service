@@ -1,6 +1,10 @@
 package com.order.orderservice.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.CreationTimestamp;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -11,21 +15,23 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     private String customerName;
 
+    @NotNull
     private Double totalAmount;
 
+    @NotBlank
     private String status;
 
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
     // Required by JPA
     public Order() {
-        this.createdAt = LocalDateTime.now();
     }
 
     // Getters and Setters
-
     public Long getId() {
         return id;
     }
@@ -60,9 +66,5 @@ public class Order {
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
     }
 }
