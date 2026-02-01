@@ -13,6 +13,10 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+ 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -68,4 +72,23 @@ class OrderServiceTest {
         assertThat(orders).isNotEmpty();
         verify(orderRepository).findAll();
     }
+
+    @Test
+void shouldThrowExceptionWhenUpdatingNonExistingOrder() {
+     
+    Long invalidId = 999L;
+
+    when(orderRepository.findById(invalidId))
+            .thenReturn(Optional.empty());
+
+    
+    RuntimeException exception = assertThrows(
+            RuntimeException.class,
+            () -> orderService.updateOrderStatus(invalidId, "SHIPPED")
+    );
+
+    assertTrue(exception.getMessage().contains("Order not found"));
+
+}
+
 }
