@@ -1,6 +1,8 @@
 package com.order.orderservice.controller;
 
 import com.order.orderservice.domain.Order;
+import com.order.orderservice.dto.OrderRequestDTO;
+import com.order.orderservice.dto.OrderResponseDTO;
 import com.order.orderservice.service.OrderService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
@@ -18,19 +20,22 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    // CREATE ORDER
+     
     @PostMapping
-    public Order createOrder(@Valid @RequestBody Order order) {
-        return orderService.createOrder(order);
-    }
+public OrderResponseDTO createOrder(
+        @Valid @RequestBody OrderRequestDTO dto) {
 
-    // GET ALL ORDERS
+    return orderService.createOrder(dto);
+}
+
+
+     
     @GetMapping
     public List<Order> getAllOrders() {
         return orderService.getAllOrders();
     }
 
-    // UPDATE STATUS
+    
     @PutMapping("/{id}/status")
     public Order updateOrderStatus(
             @PathVariable Long id,
