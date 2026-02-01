@@ -1,10 +1,13 @@
 package com.order.orderservice.service;
 
 import com.order.orderservice.domain.Order;
+import com.order.orderservice.exception.OrderNotFoundException;
 import com.order.orderservice.repository.OrderRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
+
 
 @Service
 public class OrderService {
@@ -28,7 +31,7 @@ public class OrderService {
     // UPDATE STATUS
     public Order updateOrderStatus(Long id, String status) {
         Order order = orderRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Order not found"));
+                .orElseThrow(() -> new OrderNotFoundException("Order not found with id " + id));
 
         order.setStatus(status);
         return orderRepository.save(order);
