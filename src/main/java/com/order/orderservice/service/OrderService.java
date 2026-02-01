@@ -3,9 +3,6 @@ package com.order.orderservice.service;
 import com.order.orderservice.domain.Order;
 import com.order.orderservice.repository.OrderRepository;
 import org.springframework.stereotype.Service;
-import com.order.orderservice.dto.OrderRequestDTO;
-import com.order.orderservice.dto.OrderResponseDTO;
-
 
 import java.util.List;
 
@@ -18,26 +15,22 @@ public class OrderService {
         this.orderRepository = orderRepository;
     }
 
-    public OrderResponseDTO createOrder(OrderRequestDTO dto) {
-    Order order = new Order();
-    order.setCustomerName(dto.getCustomerName());
-    order.setTotalAmount(dto.getTotalAmount());
-    order.setStatus(dto.getStatus());
+    // CREATE ORDER (Entity-based)
+    public Order createOrder(Order order) {
+        return orderRepository.save(order);
+    }
 
-    Order saved = orderRepository.save(order);
-
-    OrderResponseDTO response = new OrderResponseDTO();
-    response.setId(saved.getId());
-    response.setCustomerName(saved.getCustomerName());
-    response.setTotalAmount(saved.getTotalAmount());
-    response.setStatus(saved.getStatus());
-    response.setCreatedAt(saved.getCreatedAt());
-
-    return response;
-}
-
-
+    // GET ALL ORDERS
     public List<Order> getAllOrders() {
         return orderRepository.findAll();
+    }
+
+    // UPDATE STATUS
+    public Order updateOrderStatus(Long id, String status) {
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+
+        order.setStatus(status);
+        return orderRepository.save(order);
     }
 }
