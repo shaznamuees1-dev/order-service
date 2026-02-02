@@ -42,5 +42,37 @@ class OrderControllerTest {
         mockMvc.perform(get("/orders"))
                 .andExpect(status().isOk());
     }
+
+    @Test
+void shouldUpdateOrderStatus() throws Exception {
+    
+    OrderRequestDTO request = new OrderRequestDTO();
+    request.setCustomerName("Status Test User");
+    request.setTotalAmount(1500.0);
+    request.setStatus("CREATED");
+
+
+    String response = mockMvc.perform(
+            post("/orders")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(request))
+    )
+    .andExpect(status().isOk())
+    .andReturn()
+    .getResponse()
+    .getContentAsString();
+
+     
+    Long orderId = objectMapper.readTree(response).get("id").asLong();
+
+     
+    mockMvc.perform(
+            put("/orders/{id}/status", orderId)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content("{\"status\":\"SHIPPED\"}")
+    )
+    .andExpect(status().isOk());
+}
+
 }
 
