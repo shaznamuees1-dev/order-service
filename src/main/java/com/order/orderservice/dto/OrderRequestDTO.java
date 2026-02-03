@@ -11,9 +11,7 @@ public class OrderRequestDTO {
     @NotNull
     private Double totalAmount;
 
-    @NotBlank
-    private String status;
-
+    
     // getters & setters
     public String getCustomerName() {
         return customerName;
@@ -31,11 +29,5 @@ public class OrderRequestDTO {
         this.totalAmount = totalAmount;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
+     
 }

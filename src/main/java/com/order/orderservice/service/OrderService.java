@@ -20,17 +20,17 @@ public class OrderService {
         this.orderRepository = orderRepository;
     }
 
-    // CREATE ORDER (Entity-based)
+    
     public Order createOrder(Order order) {
         return orderRepository.save(order);
     }
 
-    // GET ALL ORDERS
+    
     public List<Order> getAllOrders() {
         return orderRepository.findAll();
     }
-
-    // UPDATE STATUS
+    
+    
     public Order updateOrderStatus(Long id, String status) {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new OrderNotFoundException("Order not found with id " + id));
@@ -44,8 +44,8 @@ public class OrderService {
     Order order = new Order();
     order.setCustomerName(dto.getCustomerName());
     order.setTotalAmount(dto.getTotalAmount());
-    order.setStatus(dto.getStatus());
-
+     order.setStatus("CREATED"); 
+     
     Order saved = orderRepository.save(order);
 
     OrderResponseDTO response = new OrderResponseDTO();

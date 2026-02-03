@@ -28,8 +28,7 @@ class OrderControllerTest {
         OrderRequestDTO dto = new OrderRequestDTO();
         dto.setCustomerName("JUnit User");
         dto.setTotalAmount(1000.0);
-        dto.setStatus("CREATED");
-
+        
         mockMvc.perform(post("/orders")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(dto)))
@@ -49,8 +48,7 @@ void shouldUpdateOrderStatus() throws Exception {
     OrderRequestDTO request = new OrderRequestDTO();
     request.setCustomerName("Status Test User");
     request.setTotalAmount(1500.0);
-    request.setStatus("CREATED");
-
+    
 
     String response = mockMvc.perform(
             post("/orders")
