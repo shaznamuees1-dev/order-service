@@ -3,6 +3,7 @@ package com.order.orderservice.controller;
 import com.order.orderservice.domain.Order;
 import com.order.orderservice.dto.OrderRequestDTO;
 import com.order.orderservice.dto.OrderResponseDTO;
+import com.order.orderservice.dto.OrderUpdateDTO;
 import com.order.orderservice.service.OrderService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
@@ -44,4 +45,26 @@ public OrderResponseDTO createOrder(
         String status = request.get("status");
         return orderService.updateOrderStatus(id, status);
     }
+
+
+    @GetMapping("/{id}")
+public Order getOrderById(@PathVariable Long id) {
+    return orderService.getOrderById(id);
+}
+
+@DeleteMapping("/{id}")
+public void deleteOrder(@PathVariable Long id) {
+    orderService.deleteOrder(id);
+}
+
+
+@PutMapping("/{id}")
+public Order updateOrder(
+        @PathVariable Long id,
+        @RequestBody OrderUpdateDTO dto) {
+
+    return orderService.updateOrder(id, dto);
+}
+
+
 }

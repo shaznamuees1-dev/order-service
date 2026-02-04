@@ -3,6 +3,7 @@ package com.order.orderservice.service;
 import com.order.orderservice.domain.Order;
 import com.order.orderservice.dto.OrderRequestDTO;
 import com.order.orderservice.dto.OrderResponseDTO;
+import com.order.orderservice.dto.OrderUpdateDTO;
 import com.order.orderservice.exception.OrderNotFoundException;
 import com.order.orderservice.repository.OrderRepository;
 import org.springframework.stereotype.Service;
@@ -57,5 +58,33 @@ public class OrderService {
 
     return response;
 }
+
+public Order getOrderById(Long id) {
+    return orderRepository.findById(id)
+            .orElseThrow(() -> new OrderNotFoundException(
+                    "Order not found with id " + id));
+}
+
+public void deleteOrder(Long id) {
+    Order order = orderRepository.findById(id)
+            .orElseThrow(() -> new OrderNotFoundException(
+                    "Order not found with id " + id));
+
+    orderRepository.delete(order);
+}
+
+public Order updateOrder(Long id, OrderUpdateDTO dto) {
+    Order order = orderRepository.findById(id)
+            .orElseThrow(() ->
+                    new OrderNotFoundException("Order not found with id " + id)
+            );
+
+    order.setCustomerName(dto.getCustomerName());
+    order.setTotalAmount(dto.getTotalAmount());
+    order.setStatus(dto.getStatus());
+
+    return orderRepository.save(order);
+}
+
 
 }
