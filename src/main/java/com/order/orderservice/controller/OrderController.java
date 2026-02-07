@@ -6,6 +6,8 @@ import com.order.orderservice.dto.OrderResponseDTO;
 import com.order.orderservice.dto.OrderUpdateDTO;
 import com.order.orderservice.service.OrderService;
 import jakarta.validation.Valid;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +25,7 @@ public class OrderController {
 
      
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
 public OrderResponseDTO createOrder(
         @Valid @RequestBody OrderRequestDTO dto) {
 
@@ -53,6 +56,7 @@ public Order getOrderById(@PathVariable Long id) {
 }
 
 @DeleteMapping("/{id}")
+@ResponseStatus(HttpStatus.NO_CONTENT)
 public void deleteOrder(@PathVariable Long id) {
     orderService.deleteOrder(id);
 }
@@ -66,5 +70,6 @@ public Order updateOrder(
     return orderService.updateOrder(id, dto);
 }
 
+ 
 
 }
