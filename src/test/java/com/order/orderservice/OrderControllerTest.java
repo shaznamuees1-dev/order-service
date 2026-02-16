@@ -28,49 +28,40 @@ class OrderControllerTest {
         OrderRequestDTO dto = new OrderRequestDTO();
         dto.setCustomerName("JUnit User");
         dto.setTotalAmount(1000.0);
-        
+
         mockMvc.perform(post("/orders")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(dto)))
-                .andExpect(status().isOk())
+                .andExpect(status().isCreated())   // 201
                 .andExpect(jsonPath("$.id").exists());
     }
 
     @Test
     void shouldFetchOrders() throws Exception {
         mockMvc.perform(get("/orders"))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk());      // 200
     }
 
     @Test
-void shouldUpdateOrderStatus() throws Exception {
-    
-    OrderRequestDTO request = new OrderRequestDTO();
-    request.setCustomerName("Status Test User");
-    request.setTotalAmount(1500.0);
-    
+    void shouldUpdateOrderStatus() throws Exception {
 
-    String response = mockMvc.perform(
-            post("/orders")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(request))
-    )
-    .andExpect(status().isOk())
-    .andReturn()
-    .getResponse()
-    .getContentAsString();
+        OrderRequestDTO request = new OrderRequestDTO();
+        request.setCustomerName("Status Test User");
+        request.setTotalAmount(1500.0);
 
-     
-    Long orderId = objectMapper.readTree(response).get("id").asLong();
+        String response = mockMvc.perform(post("/orders")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isCreated())  // 201
+                .andReturn()
+                .getResponse()
+                .getContentAsString();
 
-     
-    mockMvc.perform(
-            put("/orders/{id}/status", orderId)
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content("{\"status\":\"SHIPPED\"}")
-    )
-    .andExpect(status().isOk());
+        Long orderId = objectMapper.readTree(response).get("id").asLong();
+
+        mockMvc.perform(put("/orders/{id}/status", orderId)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("{\"status\":\"SHIPPED\"}"))
+                .andExpect(status().isOk());      // 200
+    }
 }
-
-}
-
